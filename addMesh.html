@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<button onclick="add('cube'); addControls()" id="addCube">cube</button>
+<button onclick="add('cube'); addControls(cube)" id="addCube">cube</button>
 <button onclick="add('sphere')" id="addSphere">sphere</button>
 <br>
 <button onclick="deleteObject(); deleteControls()">delete</button>
@@ -15,7 +15,7 @@
 <script src="js/OrbitControls.js"></script>
 <script>
     var scene, camera, renderer;
-    var light, object;
+    var light;
     var gui;
     var HEIGHT = window.innerHeight,
             WIDTH = window.innerWidth;
@@ -38,11 +38,6 @@
     light.position.set(15,30,50);
     scene.add(light);
 
-    //        var geometry =  new THREE.CubeGeometry(1,1,1);
-    //        var material = new THREE.MeshLambertMaterial({color: 0xff3300});
-    //        object = new THREE.Mesh(geometry,material);
-    //        object.position.set(0,0,0);
-    //        scene.add(object);
 
     function add(mesh) {
         var geometry, material;
@@ -69,15 +64,16 @@
 
     function deleteObject() {
         scene.remove(objects);
-        objects.remove(cube);
-        objects.remove(sphere);
 
+//        objects.remove(cube);
+//        objects.remove(sphere);
     }
 
-    function addControls() {
-        function updateGeometry (object, geometry) {
-            object.geometry.dispose();
-            object.geometry = geometry;
+    function addControls(mesh) {
+
+        function updateGeometry (mesh, geometry) {
+            mesh.geometry.dispose();
+            mesh.geometry = geometry;
         }
 
         var data = {
@@ -87,7 +83,7 @@
         };
 
         function generateGeometry() {
-            updateGeometry(object,
+            updateGeometry(mesh,
                     new THREE.CubeGeometry(
                             data.width, data.height, data.depth
                     ))
@@ -110,7 +106,6 @@
 
         requestAnimationFrame( render );
         renderer.render( scene, camera );
-
 
     };
 

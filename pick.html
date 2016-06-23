@@ -10,7 +10,6 @@
 <script src="js/TrackballControls.js"></script>
 
 <script>
-    var stats;
     var scene, camera, light, backgroundLight, renderer;
     var geom;
     var raycaster, mouseVector,INTERSECTED, SELECTED;
@@ -33,7 +32,7 @@
     controls = new THREE.TrackballControls( camera );
     controls.zoomSpeed = 0.1;
 
-    var clock = new THREE.Clock();
+//    var clock = new THREE.Clock();
 
 
     light = new THREE.PointLight(0xffffcc, 1);
@@ -146,13 +145,13 @@
         requestAnimationFrame( animate );
         controls.update();
         render();
-        update()
+//        update()
     }
 
-    function update() {
-        var delta = clock.getDelta();
-        controls.update(delta);
-    }
+//    function update() {
+//        var delta = clock.getDelta();
+//        controls.update(delta);
+//    }
 
 
 
