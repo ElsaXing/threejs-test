@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button onclick="add('cube'); addControls()" id="addCube">cube</button>
+<button onclick="add('sphere')" id="addSphere">sphere</button>
+<br>
+<button onclick="deleteObject(); deleteControls()">delete</button>
+
+<script src="js/three.min.js"></script>
+<script src='js/dat.gui.min.js'></script>
+<script src="js/OrbitControls.js"></script>
+<script>
+    var scene, camera, renderer;
+    var light, object;
+    var gui;
+    var HEIGHT = window.innerHeight,
+            WIDTH = window.innerWidth;
+    var objects = new THREE.Object3D();
+
+    scene = new THREE.Scene();
+
+    camera = new THREE.PerspectiveCamera(75,WIDTH/HEIGHT,.1,1000);
+    camera.position.set(10,10,10);
+
+    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize( WIDTH, HEIGHT );
+    document.body.appendChild( renderer.domElement );
+
+    var orbit = new THREE.OrbitControls( camera, renderer.domElement );
+    orbit.enableZoom = false;
+
+    light = new THREE.PointLight(0xffffff);
+    light.position.set(15,30,50);
+    scene.add(light);
+
+    //        var geometry =  new THREE.CubeGeometry(1,1,1);
+    //        var material = new THREE.MeshLambertMaterial({color: 0xff3300});
+    //        object = new THREE.Mesh(geometry,material);
+    //        object.position.set(0,0,0);
+    //        scene.add(object);
+
+    function add(mesh) {
+        var geometry, material;
+
+        if (mesh == 'cube') {
+            geometry = new THREE.BoxGeometry(1,1,1);
+            material = new THREE.MeshLambertMaterial({color: 0xCCFFCC});
+            cube = new THREE.Mesh(geometry, material);
+            cube.position.set(0,0,0);
+            objects.add(cube);
+        }
+
+        else if (mesh == 'sphere') {
+            geometry = new THREE.SphereGeometry(2,32,32);
+            material = new THREE.MeshLambertMaterial({color: 0xCCFFCC});
+            sphere = new THREE.Mesh(geometry, material);
+            sphere.position.set(0,0,0);
+            objects.add(sphere)
+        }
+
+        scene.add(objects);
+
+    }
+
+    function deleteObject() {
+        scene.remove(objects);
+        objects.remove(cube);
+        objects.remove(sphere);
+
+    }
+
+    function addControls() {
+        function updateGeometry (object, geometry) {
+            object.geometry.dispose();
+            object.geometry = geometry;
+        }
+
+        var data = {
+            width : 1,
+            height : 1,
+            depth : 1
+        };
+
+        function generateGeometry() {
+            updateGeometry(object,
+                    new THREE.CubeGeometry(
+                            data.width, data.height, data.depth
+                    ))
+        }
+
+        gui = new dat.GUI();
+        gui.add(data,'width', 0, 10).onChange(generateGeometry);
+        gui.add(data,'height', 0, 10).onChange(generateGeometry);
+        gui.add(data,'depth', 0, 10).onChange(generateGeometry);
+
+    }
+
+    function deleteControls () {
+        var parent = document.getElementsByClassName('ac')[0];
+        var child = document.getElementsByClassName('main')[0];
+        parent.removeChild(child);
+    }
+
+    var render = function () {
+
+        requestAnimationFrame( render );
+        renderer.render( scene, camera );
+
+
+    };
+
+    window.addEventListener( 'resize', function () {
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+    }, false );
+
+    render();
+
+</script>
+</body>
+</html>
