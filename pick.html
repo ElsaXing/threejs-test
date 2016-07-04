@@ -32,12 +32,12 @@
     controls = new THREE.TrackballControls( camera );
     controls.zoomSpeed = 0.1;
 
-//    var clock = new THREE.Clock();
 
 
     light = new THREE.PointLight(0xffffcc, 1);
-    light.position.set(10,70,100);
+    light.position.set(100,10,0);
     scene.add(light);
+
 
     backgroundLight = new THREE.PointLight(0xffffcc, 0.5);
     backgroundLight.position.set(-10,-30,-50);
@@ -145,13 +145,8 @@
         requestAnimationFrame( animate );
         controls.update();
         render();
-//        update()
     }
 
-//    function update() {
-//        var delta = clock.getDelta();
-//        controls.update(delta);
-//    }
 
 
 

@@ -15,7 +15,7 @@
 <script src="js/OrbitControls.js"></script>
 <script>
     var scene, camera, renderer;
-    var light;
+    var light, backgroundLight;
     var gui;
     var HEIGHT = window.innerHeight,
             WIDTH = window.innerWidth;
@@ -29,14 +29,21 @@
     renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( WIDTH, HEIGHT );
+    renderer.setClearColor(0xFFFFFF);
     document.body.appendChild( renderer.domElement );
 
     var orbit = new THREE.OrbitControls( camera, renderer.domElement );
-    orbit.enableZoom = false;
 
     light = new THREE.PointLight(0xffffff);
     light.position.set(15,30,50);
     scene.add(light);
+
+    var axisHelper = new THREE.AxisHelper( 5 );
+    scene.add( axisHelper );
+
+    backgroundLight = new THREE.PointLight(0xffffcc, 0.5);
+    backgroundLight.position.set(-10,-30,-50);
+    scene.add(backgroundLight);
 
 
     function add(mesh) {
@@ -54,7 +61,7 @@
             geometry = new THREE.SphereGeometry(2,32,32);
             material = new THREE.MeshLambertMaterial({color: 0xCCFFCC});
             sphere = new THREE.Mesh(geometry, material);
-            sphere.position.set(0,0,0);
+            sphere.position.set(0,0,10);
             objects.add(sphere)
         }
 
